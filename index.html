@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Angle Selector</title>
+</head>
+<body>
+    <div>
+        <input type="number" id="angle-input" value="0" min="0" max="360">
+        <input type="range" id="angle-slider" min="-180" max="180" value="0">
+    </div>
+    <div>
+        <input type="radio" name="angle" id="angle0" value="0"> 0
+        <input type="radio" name="angle" id="angle45" value="45"> 45
+        <input type="radio" name="angle" id="angle60" value="60"> 60
+        <input type="radio" name="angle" id="angle90" value="90"> 90
+        <input type="radio" name="angle" id="angle180" value="180"> 180
+    </div>
+    <div>
+        
+    </div>
+    <script>
+        const angleInput = document.getElementById('angle-input');
+        const angleSlider = document.getElementById('angle-slider');
+        const radioButtons = document.querySelectorAll('input[name="angle"]');
+
+        // Function to update slider and radio buttons when text box changes
+        angleInput.addEventListener('input', function() {
+            let value = parseInt(angleInput.value) || 0;
+            if (value < 0) value = 0;
+            if (value > 360) value = 360;
+            angleInput.value = value;
+            angleSlider.value = value - 180;
+
+            updateRadioButtons(value);
+        });
+
+        // Function to update text box and radio buttons when slider changes
+        angleSlider.addEventListener('input', function() {
+            let value = parseInt(angleSlider.value) + 180;
+            angleInput.value = value;
+            updateRadioButtons(value);
+        });
+
+        // Function to update text box and slider when a radio button is clicked
+        radioButtons.forEach(function(radio) {
+            radio.addEventListener('change', function() {
+                let value = parseInt(this.value);
+                angleInput.value = value;
+                angleSlider.value = value - 180;
+            });
+        });
+
+        // Function to update radio button selection
+        function updateRadioButtons(value) {
+            radioButtons.forEach(function(radio) {
+                radio.checked = parseInt(radio.value) === value;
+            });
+        }
+
+    </script>
+</body>
+</html>
