@@ -4,22 +4,54 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Angle Selector</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0; /* Light background color for contrast */
+        }
+
+        .container {
+            border-radius: 10px; /* Rounded corners */
+            padding: 20px; /* Padding inside the container */
+            background-color: #fff; /* White background inside the container */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+            text-align: center; /* Center the text inside the container */
+        }
+
+        h1 {
+            margin-bottom: 20px;
+            color: #333; /* Dark text color for readability */
+        }
+
+        .controls div {
+            margin-bottom: 10px;
+        }
+    </style>
 </head>
 <body>
-    <div>
-        <input type="number" id="angle-input" value="0" min="0" max="360">
-        <input type="range" id="angle-slider" min="-180" max="180" value="0">
+    <div class="container">
+        <h1>Angle Selector</h1>
+        <div class="controls">
+            <div>
+                <input type="number" id="angle-input" value="180" min="0" max="360">
+                <input type="range" id="angle-slider" min="0" max="360" value="180">
+            </div>
+            <div>
+                <input type="radio" name="angle" id="angle0" value="0"> 0
+                <input type="radio" name="angle" id="angle45" value="45"> 45
+                <input type="radio" name="angle" id="angle60" value="60"> 60
+                <input type="radio" name="angle" id="angle90" value="90"> 90
+                <input type="radio" name="angle" id="angle180" value="180" checked> 180
+            </div>
+        </div>
     </div>
-    <div>
-        <input type="radio" name="angle" id="angle0" value="0"> 0
-        <input type="radio" name="angle" id="angle45" value="45"> 45
-        <input type="radio" name="angle" id="angle60" value="60"> 60
-        <input type="radio" name="angle" id="angle90" value="90"> 90
-        <input type="radio" name="angle" id="angle180" value="180"> 180
-    </div>
-    <div>
-        
-    </div>
+    
     <script>
         const angleInput = document.getElementById('angle-input');
         const angleSlider = document.getElementById('angle-slider');
@@ -28,17 +60,21 @@
         // Function to update slider and radio buttons when text box changes
         angleInput.addEventListener('input', function() {
             let value = parseInt(angleInput.value) || 0;
-            if (value < 0) value = 0;
-            if (value > 360) value = 360;
+            if (value > 360) {
+                value %= 360;
+            }
             angleInput.value = value;
-            angleSlider.value = value - 180;
+            angleSlider.value = value;
 
             updateRadioButtons(value);
         });
 
         // Function to update text box and radio buttons when slider changes
         angleSlider.addEventListener('input', function() {
-            let value = parseInt(angleSlider.value) + 180;
+            let value = parseInt(angleSlider.value);
+            if (value > 360) {
+                value %= 360;
+            }
             angleInput.value = value;
             updateRadioButtons(value);
         });
@@ -48,7 +84,7 @@
             radio.addEventListener('change', function() {
                 let value = parseInt(this.value);
                 angleInput.value = value;
-                angleSlider.value = value - 180;
+                angleSlider.value = value;
             });
         });
 
@@ -58,7 +94,6 @@
                 radio.checked = parseInt(radio.value) === value;
             });
         }
-
     </script>
 </body>
 </html>
