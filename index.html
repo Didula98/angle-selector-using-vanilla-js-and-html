@@ -59,7 +59,7 @@
 
         // Function to update slider and radio buttons when text box changes
         angleInput.addEventListener('input', function() {
-            let value = parseInt(angleInput.value) || 0;
+            let value = parseInt(angleInput.value);
             if (value > 360) {
                 value %= 360;
             }
